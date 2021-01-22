@@ -1,11 +1,28 @@
 pipeline {
     agent any
     environment {
-        containerName = "vikramsardeshpande/persistent-web-app"
+        containerName = ""
         container_version = "1.0.0.${BUILD_ID}"
         dockerTag = "${containerName}:${container_version}"
     }
     stages{
+        
+        stage('Clone repository') {
+			   steps {	       
+				 checkout scm }
+        
+			   }
+        
+        stage('Build') {
+			   steps {	       
+				 bat 'rm target/roshambo.war'
+                 bat  'rm -rf target/roshambo' 
+               
+               }
+        
+			   }
+        
+        
         stage ('Build Container') {
             steps {
                 sh 'docker build -f "Dockerfile" --no-cache -t ${dockerTag} .'
